@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import InventoryListContainer from './containers/InventoryListContainer'
+import NewInventoryItem from './containers/NewInventoryItem'
+import Header from './components/Header'
+import Icon from './components/Icon'
+import { ICONS } from './constants'
 
 class App extends Component {
   render() {
+    const addIcon = <Icon icon={ ICONS.PLUS } />
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <Header title='Inventory Item' right={ addIcon } left='Cancel'/>
       </div>
     );
   }
