@@ -7,10 +7,10 @@ const InventoryItemList = ({items}) => {
     <div>
     { items.isFetching && <h3>Loading</h3> }
     { items.data.map((item, index) => (
-      <ListItemView
+      <ListItemView key={index}
         imagePath={imageDir + item.imagePath}
         primaryText={item.name}
-        secondaryText={item.unit + ' ' + item._store}
+        secondaryText={item.unit + ' ' + item.sku + ' ' + item.category}
       />
     ))}
     </div>

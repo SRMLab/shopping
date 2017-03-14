@@ -3,18 +3,21 @@ import { connect } from 'react-redux'
 import { fetchData } from '../actions'
 import Header from '../components/Header';
 import InventoryItemList from '../components/InventoryItemList';
-import Icon from '../components/Icon'
-import { ICONS } from '../constants'
+import { browserHistory } from 'react-router'
+// import Icon from '../components/Icon'
+// import { ICONS } from '../constants'
 
 class InventoryListContainer extends Component {
   componentDidMount(){
     this.props.fetchData()
   }
   render(){
-    const addIcon = <Icon icon={ ICONS.PLUS } />
+    // const addIcon = <Icon icon={ ICONS.PLUS } />
     return (
       <div>
-        <Header title='Inventory List' right={ addIcon } />
+        <Header title='Inventory List' right='New'
+          onClickRight={()=> browserHistory.push('/inventory/new')}
+        />
         <InventoryItemList items={this.props.inventoryItems}/>
       </div>
     )

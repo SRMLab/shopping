@@ -3,7 +3,12 @@ import {
   FETCHING_DATA_SUCCESS,
   FETCHING_DATA_FAILURE,
 } from '../constants'
-import { getInventoryItems, insertInventoryItem }from './api'
+
+import {
+  getInventoryItems,
+  getInventoryItem,
+  insertInventoryItem
+}from './api'
 
 export function getData() {
   return {
@@ -28,6 +33,24 @@ export function fetchData() {
   return (dispatch) => {
     dispatch(getData())
     getInventoryItems()
+      .then((data) => {
+        dispatch(getDataSuccess(data))
+      })
+      .catch((err) => console.log('err:', err))
+  }
+}
+
+export function getInventoryItemSuccess(data) {
+  return {
+    type: FETCHING_INVENTORY_ITEM_SUCCESS,
+    data,
+  }
+}
+
+export function fetchInventoryItem(id) {
+  return (dispatch) => {
+    dispatch(getData())
+    getInventoryItem(id)
       .then((data) => {
         dispatch(getDataSuccess(data))
       })

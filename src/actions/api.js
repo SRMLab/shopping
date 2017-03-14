@@ -1,14 +1,22 @@
 const inventoryItems = [
-  { name: "Brocolli", unit: "case", _store: "aaa", imagePath: "broccoli.jpg" },
-  { name: "Mushroom", unit: "case", _store: "aaa", imagePath: "mushroom.jpg" },
-  { name: "Cabbage", unit: "case", _store: "aaa", imagePath: "cabbage.jpg" }
+  { _id: 0, name: "Brocolli", unit: "case", _store: "aaa", imagePath: "broccoli.jpg", category: "Vegetables", sku: "V001" },
+  { _id: 1, name: "Mushroom", unit: "case", _store: "aaa", imagePath: "mushroom.jpg", category: "Vegetables", sku: "V002" },
+  { _id: 2, name: "Cabbage", unit: "case", _store: "aaa", imagePath: "cabbage.jpg", category: "Vegetables", sku: "V003" }
 ]
 
 export function getInventoryItems() {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       return resolve(inventoryItems)
-    }, 3000)
+    }, 1000)
+  })
+}
+
+export function getInventoryItem(id) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      return resolve(inventoryItems[id])
+    }, 1000)
   })
 }
 
@@ -18,6 +26,6 @@ export function insertInventoryItem(item) {
       const newItem = {...item, _store: 'aaa'}
       inventoryItems.push(newItem)
       return resolve(newItem)
-    }, 3000)
+    }, 1000)
   })
 }

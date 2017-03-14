@@ -4,6 +4,7 @@ import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import FlatButton from 'material-ui/FlatButton';
+import { Router, browserHistory } from 'react-router'
 
 const styles = {
   title: {
@@ -16,6 +17,7 @@ const Header = ({title, right, onClickRight}) => (
     title={<span style={styles.title}>{title}</span>}
     iconElementLeft={<IconButton><NavigationClose /></IconButton>}
     iconElementRight={<FlatButton label={right} />}
+    onLeftIconButtonTouchTap={browserHistory.goBack}
     onRightIconButtonTouchTap={()=>onClickRight()}
   />
 );
