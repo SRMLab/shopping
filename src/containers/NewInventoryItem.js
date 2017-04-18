@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { addInventoryItem } from '../actions'
+import { browserHistory } from 'react-router';
+
+import { addInventoryItem, asyncRequest } from '../actions'
 import _ from 'underscore'
 
 import Button from '../components/Button'
@@ -22,6 +24,7 @@ class NewInventoryItem extends Component {
     unit: '',
     category: '',
     sku: '',
+    image: '',
   }
   handleChangeName = (e) => this.setState({name: e.target.value.trim()})
   handleChangeUnit = (value) => this.setState({unit: value.trim()})
@@ -38,6 +41,7 @@ class NewInventoryItem extends Component {
       unit: this.state.unit,
       category: this.state.category,
       sku: this.state.sku,
+      image: this.state.image,
     }))
   }
   render() {
@@ -84,6 +88,8 @@ class NewInventoryItem extends Component {
     )
   }
 }
+
+
 NewInventoryItem = connect()(NewInventoryItem)
 
 export default NewInventoryItem

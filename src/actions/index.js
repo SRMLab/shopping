@@ -1,70 +1,93 @@
 import {
-  FETCHING_DATA,
-  FETCHING_DATA_SUCCESS,
-  FETCHING_DATA_FAILURE,
+  ASYNC_REQUEST, 
+  ASYNC_FAILURE,
+  FETCH_INVENTORY_ITEMS_SUCCESS, 
+  FETCH_ITEM_IMAGES_SUCCESS, 
+  ADD_INVENTORY_ITEM_SUCCESS,
 } from '../constants'
 
 import {
   getInventoryItems,
   getInventoryItem,
-  insertInventoryItem
+  insertInventoryItem,
+  getItemImages,
 }from './api'
 
-export function getData() {
+import { browserHistory } from 'react-router';
+
+export function asyncRequest() {
   return {
-    type: FETCHING_DATA
+    type: ASYNC_REQUEST
   }
 }
 
-export function getDataSuccess(data) {
+export function asyncFailure() {
   return {
-    type: FETCHING_DATA_SUCCESS,
+    type: ASYNC_FAILURE
+  }
+}
+
+function fetchInventoryItemsSuccess(data) {
+  return {
+    type: FETCH_INVENTORY_ITEMS_SUCCESS,
     data,
   }
 }
 
-export function getDataFailure() {
+function addInventoryItemSuccess(data) {
   return {
-    type: FETCHING_DATA_FAILURE
+    type: ADD_INVENTORY_ITEM_SUCCESS,
+    data,
   }
 }
 
-export function fetchData() {
+function fetchItemImagesSuccess(data) {
+  return {
+    type: FETCH_ITEM_IMAGES_SUCCESS,
+    data,
+  }
+}
+
+export function fetchInventoryItems() {
   return (dispatch) => {
-    dispatch(getData())
+    dispatch(asyncRequest())
     getInventoryItems()
       .then((data) => {
-        dispatch(getDataSuccess(data))
+        dispatch(fetchInventoryItemsSuccess(data))
       })
-      .catch((err) => console.log('err:', err))
-  }
-}
-
-export function getInventoryItemSuccess(data) {
-  return {
-    type: FETCHING_INVENTORY_ITEM_SUCCESS,
-    data,
-  }
-}
-
-export function fetchInventoryItem(id) {
-  return (dispatch) => {
-    dispatch(getData())
-    getInventoryItem(id)
-      .then((data) => {
-        dispatch(getDataSuccess(data))
+      .catch((err) => {
+        dispatch(asyncFailure())
+        console.log('err:', err);
       })
-      .catch((err) => console.log('err:', err))
   }
 }
 
 export function addInventoryItem(item) {
   return (dispatch) => {
-    dispatch(getData())
+    dispatch(asyncRequest())
     insertInventoryItem(item)
       .then((data) => {
-        dispatch(getDataSuccess(data))
+        dispatch(addInventoryItemSuccess(data))
+        browserHistory.push('/inventory')
       })
-      .catch((err) => console.log('err:', err))
+      .catch((err) => {
+        dispatch(asyncFailure())
+        console.log('err:', err);
+      })
   }
 }
+
+export function fetchItemImages() {
+  return (dispatch) => {
+    dispatch(asyncRequest())
+    getItemImages()
+      .then((data) => {
+        dispatch(fetchItemImagesSuccess(data))
+      })
+      .catch((err) => {
+        dispatch(asyncFailure())
+        console.log('err:', err);
+      })
+  }
+}
+

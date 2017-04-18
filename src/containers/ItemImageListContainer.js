@@ -1,24 +1,24 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchInventoryItems } from '../actions'
+import { fetchInventoryItems, fetchItemImages } from '../actions'
 import Header from '../components/Header';
 import InventoryItemList from '../components/InventoryItemList';
+import ItemImageList from '../components/ItemImageList';
 import { browserHistory } from 'react-router'
 // import Icon from '../components/Icon'
 // import { ICONS } from '../constants'
 
-class InventoryListContainer extends Component {
+class ItemImageListContainer extends Component {
   componentDidMount(){
-    this.props.fetchInventoryItems()
+    this.props.fetchItemImages()
   }
   render(){
     // const addIcon = <Icon icon={ ICONS.PLUS } />
     return (
       <div>
-        <Header title='Inventory List' right='New'
-          onClickRight={()=> browserHistory.push('/inventory/new')}
+        <Header title='Item Image List' right='New'
         />
-        <InventoryItemList items={this.props.inventoryItems}/>
+        <ItemImageList images={this.props.itemImages}/>
       </div>
     )
   }
@@ -26,19 +26,19 @@ class InventoryListContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    inventoryItems: state.inventoryItems
+    itemImages: state.inventoryItems.itemImages
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchInventoryItems: () => dispatch(fetchInventoryItems())
+    fetchItemImages: () => dispatch(fetchItemImages())
   }
 }
 
-InventoryListContainer = connect(
+ItemImageListContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(InventoryListContainer)
+)(ItemImageListContainer)
 
-export default InventoryListContainer;
+export default ItemImageListContainer;

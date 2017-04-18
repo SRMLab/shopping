@@ -1,16 +1,16 @@
 import React from 'react';
 import ListItemView from '../components/ListItemView';
+import _ from 'underscore'
 
 const InventoryItemList = ({items}) => {
-  const imageDir = "/items/"
   return (
     <div>
     { items.isFetching && <h3>Loading</h3> }
-    { items.data.map((item, index) => (
+    { _.map(items.data, (item, index) => (
       <ListItemView key={index}
-        imagePath={imageDir + item.imagePath}
+        imagePath={item.image}
         primaryText={item.name}
-        secondaryText={item.unit + ' ' + item.sku + ' ' + item.category}
+        secondaryText={item.unit + ' ' + item.id + ' ' + item.group}
       />
     ))}
     </div>
