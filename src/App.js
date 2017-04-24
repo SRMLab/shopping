@@ -3,7 +3,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Home from './components/Home'
 import MainLayout from './components/MainLayout'
 import InventoryListContainer from './containers/InventoryListContainer'
-import ItemImageListContainer from './containers/ItemImageListContainer'
 import NewInventoryItem from './containers/NewInventoryItem'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
@@ -26,7 +25,6 @@ class App extends Component {
               <Route path="inventory">
                 <IndexRoute component={InventoryListContainer} />
                 <Route path="new" component={NewInventoryItem} />
-                <Route path="images" component={ItemImageListContainer} />
               </Route>
             </Route>
           </Router>

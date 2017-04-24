@@ -18,7 +18,7 @@ class InventoryListContainer extends Component {
         <Header title='Inventory List' right='New'
           onClickRight={()=> browserHistory.push('/inventory/new')}
         />
-        <InventoryItemList items={this.props.inventoryItems}/>
+        <InventoryItemList inventory={this.props.inventoryItems}/>
       </div>
     )
   }
@@ -26,7 +26,7 @@ class InventoryListContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    inventoryItems: state.inventoryItems
+    inventoryItems: state.inventory
   }
 }
 

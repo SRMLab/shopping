@@ -1,6 +1,4 @@
 import React from 'react';
-import ListItemView from '../components/ListItemView';
-import _ from 'underscore'
 
 const imageSize = '100px'
 const styles = {
@@ -21,11 +19,15 @@ const styles = {
 	}
 }
 
-const ItemImageList = ({images}) => {
+const ItemImageList = ({images, onClick}) => {
   return (
-		<div style={styles.container}>
-    { _.map(images, (image, index) => (
-			<div style={styles.thumbnailContainer} key={index}>
+	<div style={styles.container}>
+    { images.map((image, index) => (
+			<div style={styles.thumbnailContainer} key={index} 
+				onClick={(e) => {
+					e.preventDefault();
+					return onClick(image);
+				}}>
 				<img 
 					src={image.url}
 					alt={image.filename}
@@ -39,7 +41,3 @@ const ItemImageList = ({images}) => {
 }
 
 export default ItemImageList;
-// <button onClick={() => props.fetchData()}>
-//   <Icon icon={ ICONS.PLUS } />
-//   Reload
-// </button>

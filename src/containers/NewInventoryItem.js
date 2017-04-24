@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { browserHistory } from 'react-router';
 
-import { addInventoryItem, asyncRequest } from '../actions'
+import { addInventoryItem } from '../actions'
 import _ from 'underscore'
 
 import Button from '../components/Button'
 import InputText from '../components/InputText'
 import AutoSelect from '../components/AutoSelect'
 import Header from '../components/Header'
+import SelectImageDialog from './SelectImageDialog'
 
 
 const styles = {
@@ -21,15 +21,18 @@ class NewInventoryItem extends Component {
   state = {
     errors: {},
     name: '',
-    unit: '',
     category: '',
-    sku: '',
-    image: '',
+    imagePath: '',
+    errors: {
+      name: ''
+    }
   }
-  handleChangeName = (e) => this.setState({name: e.target.value.trim()})
-  handleChangeUnit = (value) => this.setState({unit: value.trim()})
+  handleChangeName = (e) => {
+    this.setState({name: e.target.value})
+  }
   handleChangeCategory = (value) => this.setState({category: value.trim()})
-  handleChangeSKU = (e) => this.setState({sku: e.target.value.trim()})
+  handleChangeImage = (imageUrl) => this.setState({imagePath: imageUrl})
+
   handleSubmit = (e) => {
     if (e) e.preventDefault()
     if (!this.state.name) {
@@ -40,8 +43,7 @@ class NewInventoryItem extends Component {
       name: this.state.name,
       unit: this.state.unit,
       category: this.state.category,
-      sku: this.state.sku,
-      image: this.state.image,
+      imagePath: this.state.imagePath,
     }))
   }
   render() {
@@ -58,14 +60,6 @@ class NewInventoryItem extends Component {
               errorText={this.state.errors.name}
             />
             <AutoSelect
-              label="Unit"
-              placeholder='Unit of item: select one or create'
-              value={this.state.unit}
-              onChange={this.handleChangeUnit}
-              options={['case', 'bag', 'each']}
-              errorText={this.state.errors.unit}
-            />
-            <AutoSelect
               label="Category"
               placeholder='Category of item: select one or create'
               value={this.state.category}
@@ -73,14 +67,7 @@ class NewInventoryItem extends Component {
               options={['Vegetables', 'Meat', 'Grain', 'Tools', 'Office']}
               errorText={this.state.errors.category}
             />
-            <InputText
-              label='SKU'
-              placeholder='SKU of item. ex) A01'
-              value={this.state.sku}
-              onChange={this.handleChangeSKU}
-              errorText={this.state.errors.sku}
-            />
-            <Button label='Search Images' />
+            <SelectImageDialog onChange={this.handleChangeImage}/>
             <Button label='Submit' type='submit' />
           </form>
         </div>
@@ -89,14 +76,7 @@ class NewInventoryItem extends Component {
   }
 }
 
-
 NewInventoryItem = connect()(NewInventoryItem)
 
 export default NewInventoryItem
 
-// <InputSelect
-//   label="Unit"
-//   value={this.state.unit}
-//   onChange={this.handleChangeUnit}
-//   options={{case:"case", bag:"bag", ea:"ea", lb:"lb"}}
-// />

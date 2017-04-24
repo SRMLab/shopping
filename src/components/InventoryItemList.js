@@ -2,15 +2,15 @@ import React from 'react';
 import ListItemView from '../components/ListItemView';
 import _ from 'underscore'
 
-const InventoryItemList = ({items}) => {
+const InventoryItemList = ({inventory}) => {
   return (
     <div>
-    { items.isFetching && <h3>Loading</h3> }
-    { _.map(items.data, (item, index) => (
+    { inventory.isFetching && <h3>Loading</h3> }
+    { _.map(inventory.items, (item, index) => (
       <ListItemView key={index}
-        imagePath={item.image}
+        imagePath={item.imagePath}
         primaryText={item.name}
-        secondaryText={item.unit + ' ' + item.id + ' ' + item.group}
+        secondaryText={item.category}
       />
     ))}
     </div>
@@ -18,7 +18,3 @@ const InventoryItemList = ({items}) => {
 }
 
 export default InventoryItemList;
-// <button onClick={() => props.fetchData()}>
-//   <Icon icon={ ICONS.PLUS } />
-//   Reload
-// </button>
