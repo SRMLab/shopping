@@ -33,12 +33,23 @@ export function getItemImages() {
   })
 }
 
-export function getCaterories() {
+export function getCategories() {
   return new Promise((resolve, reject) => {
     store.child('categories')
       .once('value', snap => {
         const categories = _.reduce(snap.val(), (res, item) => { res.push(item); return res } , [])
         resolve(categories)
+      })
+      .catch((err) => { reject(err) })
+  })
+}
+
+export function getShops() {
+  return new Promise((resolve, reject) => {
+    store.child('shops')
+      .once('value', snap => {
+        const shops = _.reduce(snap.val(), (res, item) => { res.push(item); return res } , [])
+        resolve(shops)
       })
       .catch((err) => { reject(err) })
   })

@@ -7,6 +7,7 @@ const AutoSelect = ({label, placeholder, value, onChange, options, ...props}) =>
     hintText={placeholder}
     value={value}
     onNewRequest={onChange}
+    onUpdateInput={onChange}
     filter={AutoComplete.noFilter}
     openOnFocus={true}
     dataSource={options}

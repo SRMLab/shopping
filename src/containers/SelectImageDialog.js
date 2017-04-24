@@ -5,7 +5,6 @@ import Dialog from 'material-ui/Dialog';
 import Button from '../components/Button'
 import InputText from '../components/InputText'
 
-import { fetchItemImages } from '../actions'
 import ItemImageList from '../components/ItemImageList';
 
 const imageSize = '80%'
@@ -37,7 +36,7 @@ class SelectImageDialog extends Component {
   };
 
   componentDidMount(){
-    this.props.fetchItemImages()
+    // this.props.fetchItemImages()
   }
   render(){
     const actions = [
@@ -80,21 +79,21 @@ class SelectImageDialog extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    itemImages: state.itemImages.images
-  }
-}
+// const mapStateToProps = (state) => {
+//   return {
+//     itemImages: state.itemImages.images
+//   }
+// }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    fetchItemImages: () => dispatch(fetchItemImages())
-  }
-}
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     fetchItemImages: () => dispatch(fetchItemImages())
+//   }
+// }
 
-SelectImageDialog = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SelectImageDialog)
+// SelectImageDialog = connect(
+//   // mapStateToProps,
+//   // mapDispatchToProps
+// )(SelectImageDialog)
 
 export default SelectImageDialog;

@@ -5,23 +5,23 @@ import {
   ADD_INVENTORY_ITEM_REQUEST,
   ADD_INVENTORY_ITEM_FAILURE,
   ADD_INVENTORY_ITEM_SUCCESS,
-  FETCH_ITEM_IMAGES_REQUEST, 
-  FETCH_ITEM_IMAGES_FAILURE, 
-  FETCH_ITEM_IMAGES_SUCCESS, 
+  FETCH_REFERENCES_SUCCESS, 
 } from '../constants'
 
 import {
   getInventoryItems,
   insertInventoryItem,
   getItemImages,
-}from './api'
+  getCategories,
+  getShops,
+} from './api'
 
 import { browserHistory } from 'react-router';
 
-function fetchInventoryItemsSuccess(data) {
+function fetchInventoryItemsSuccess(items) {
   return {
     type: FETCH_INVENTORY_ITEMS_SUCCESS,
-    data,
+    items,
   }
 }
 
@@ -32,10 +32,12 @@ function addInventoryItemSuccess(data) {
   }
 }
 
-function fetchItemImagesSuccess(data) {
+function fetchReferencesSuccess(images, categories, shops) {
   return {
-    type: FETCH_ITEM_IMAGES_SUCCESS,
-    data,
+    type: FETCH_REFERENCES_SUCCESS,
+    images,
+    categories,
+    shops
   }
 }
 
@@ -53,6 +55,22 @@ export function fetchInventoryItems() {
   }
 }
 
+export function fetchReferences() {
+  return (dispatch) => {
+    Promise.all([
+      getItemImages(),
+      getCategories(),
+      getShops()
+    ])
+    .then((data) => {
+      dispatch(fetchReferencesSuccess(data[0], data[1], data[2]))
+    })
+    .catch((err) => {
+      console.log('err:', err);
+    })
+  }
+}
+
 export function addInventoryItem(item) {
   return (dispatch) => {
     dispatch({ type: ADD_INVENTORY_ITEM_REQUEST })
@@ -63,20 +81,6 @@ export function addInventoryItem(item) {
       })
       .catch((err) => {
         dispatch({ type: ADD_INVENTORY_ITEM_FAILURE })
-        console.log('err:', err);
-      })
-  }
-}
-
-export function fetchItemImages() {
-  return (dispatch) => {
-    dispatch({ type: FETCH_ITEM_IMAGES_REQUEST })
-    getItemImages()
-      .then((data) => {
-        dispatch(fetchItemImagesSuccess(data))
-      })
-      .catch((err) => {
-        dispatch({ TYPE: FETCH_ITEM_IMAGES_FAILURE })
         console.log('err:', err);
       })
   }

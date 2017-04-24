@@ -5,10 +5,14 @@ import {
   ADD_INVENTORY_ITEM_REQUEST,
   ADD_INVENTORY_ITEM_FAILURE,
   ADD_INVENTORY_ITEM_SUCCESS,
+  FETCH_REFERENCES_SUCCESS,
 } from '../constants'
 
 const initialState = {
   items: [],
+  itemImages: [],
+  categories: [],
+  shops: [],
   isFetching: false,
   error: false,
 }
@@ -50,6 +54,13 @@ export default function inventory(state=initialState, action){
         ...state,
         isFetching: false,
         items: newData
+      }
+    case FETCH_REFERENCES_SUCCESS:
+      return {
+        ...state,
+        itemImages: action.images,
+        categories: action.categories,
+        shops: action.shops,
       }
     default:
       return state

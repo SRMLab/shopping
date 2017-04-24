@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 
-import { addInventoryItem } from '../actions'
-import _ from 'underscore'
+import { 
+  addInventoryItem,
+  fetchReferences,
+} from '../actions'
 
 import Button from '../components/Button'
 import InputText from '../components/InputText'
+import InputSelect from '../components/InputSelect'
+import InputSelectMultiple from '../components/InputSelectMultiple'
 import AutoSelect from '../components/AutoSelect'
 import Header from '../components/Header'
 import SelectImageDialog from './SelectImageDialog'
@@ -17,21 +21,34 @@ const styles = {
   }
 }
 
+let categories = [];
+let shops = [];
+
 class NewInventoryItem extends Component {
   state = {
     errors: {},
     name: '',
+    secondName: '',
     category: '',
+    shops: [],
     imagePath: '',
-    errors: {
-      name: ''
-    }
   }
   handleChangeName = (e) => {
     this.setState({name: e.target.value})
   }
-  handleChangeCategory = (value) => this.setState({category: value.trim()})
-  handleChangeImage = (imageUrl) => this.setState({imagePath: imageUrl})
+  handleChangeSecondName = (e) => {
+    this.setState({secondName: e.target.value})
+  }
+  handleChangeCategory = (e, index, value) => {
+    this.setState({category: value})
+  }
+  handleChangeShops = (e, index, values) => {
+    console.log(values)
+    this.setState({shops: values})
+  }
+  handleChangeImage = (imageUrl) => {
+    this.setState({imagePath: imageUrl})
+  }
 
   handleSubmit = (e) => {
     if (e) e.preventDefault()
@@ -39,12 +56,18 @@ class NewInventoryItem extends Component {
       this.setState({errors: {name: 'This field is required'}})
       return
     }
+    // if (!categories.includes(this.state.category)) categories.push(this.state.category);
+
     this.props.dispatch(addInventoryItem({
       name: this.state.name,
-      unit: this.state.unit,
+      secondName: this.state.secondName,
       category: this.state.category,
       imagePath: this.state.imagePath,
     }))
+  }
+
+  componentDidMount(){
+    this.props.fetchReferences()
   }
   render() {
     return (
@@ -59,15 +82,32 @@ class NewInventoryItem extends Component {
               onChange={this.handleChangeName}
               errorText={this.state.errors.name}
             />
-            <AutoSelect
+            <InputText
+              label='Secondary Name'
+              placeholder='Name of item'
+              value={this.state.secondName}
+              onChange={this.handleChangeSecondName}
+              errorText={this.state.errors.secondName}
+            />
+            <InputSelect
               label="Category"
-              placeholder='Category of item: select one or create'
+              placeholder='Choose one'
               value={this.state.category}
               onChange={this.handleChangeCategory}
-              options={['Vegetables', 'Meat', 'Grain', 'Tools', 'Office']}
+              options={this.props.categories}
               errorText={this.state.errors.category}
             />
-            <SelectImageDialog onChange={this.handleChangeImage}/>
+
+            <InputSelectMultiple
+              label="Shops"
+              placeholder='Choose one or more'
+              values={this.state.shops}
+              onChange={this.handleChangeShops}
+              options={this.props.shops}
+              errorText={this.state.errors.shops}
+            />
+
+            <SelectImageDialog onChange={this.handleChangeImage} itemImages={this.props.itemImages}/>
             <Button label='Submit' type='submit' />
           </form>
         </div>
@@ -76,7 +116,26 @@ class NewInventoryItem extends Component {
   }
 }
 
-NewInventoryItem = connect()(NewInventoryItem)
+const mapStateToProps = (state) => {
+  return {
+    items: state.inventory.items,
+    categories: state.inventory.categories,
+    shops: state.inventory.shops,
+    itemImages: state.inventory.itemImages,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchReferences: () => dispatch(fetchReferences()),
+  }
+}
+
+
+NewInventoryItem = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NewInventoryItem)
 
 export default NewInventoryItem
 
