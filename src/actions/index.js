@@ -46,6 +46,7 @@ export function fetchInventoryItems() {
     dispatch({ type: FETCH_INVENTORY_ITEMS_REQUEST })
     getInventoryItems()
       .then((data) => {
+        console.log(data)     
         dispatch(fetchInventoryItemsSuccess(data))
       })
       .catch((err) => {
@@ -72,11 +73,12 @@ export function fetchReferences() {
 }
 
 export function addInventoryItem(item) {
+  console.log(item)
   return (dispatch) => {
     dispatch({ type: ADD_INVENTORY_ITEM_REQUEST })
     insertInventoryItem(item)
-      .then((data) => {
-        dispatch(addInventoryItemSuccess(data))
+      .then(() => {
+        dispatch(addInventoryItemSuccess(item))
         browserHistory.push('/inventory')
       })
       .catch((err) => {

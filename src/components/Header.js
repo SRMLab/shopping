@@ -10,15 +10,21 @@ const styles = {
   title: {
     cursor: 'pointer',
   },
+  container: {
+    position: 'fixed',
+    top: '0px',
+    left: '0px',
+  }
 };
 
-const Header = ({title, right, onClickRight}) => (
+const Header = ({title, right, onClickRight, ...props}) => (
   <AppBar
     title={<span style={styles.title}>{title}</span>}
     iconElementLeft={<IconButton><NavigationClose /></IconButton>}
     iconElementRight={<FlatButton label={right} />}
     onLeftIconButtonTouchTap={browserHistory.goBack}
     onRightIconButtonTouchTap={()=>onClickRight()}
+    {...props}
   />
 );
 

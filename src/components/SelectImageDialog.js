@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import Dialog from 'material-ui/Dialog';
 
-import Button from '../components/Button'
-import InputText from '../components/InputText'
+import Button from './Button'
+import InputText from './InputText'
 
-import ItemImageList from '../components/ItemImageList';
+import ItemImageList from './ItemImageList';
 
 const imageSize = '80%'
 const styles = {
@@ -14,6 +13,10 @@ const styles = {
 		width: imageSize,
 		margin: '5px',
 	},
+  container: {
+    width: '100%',
+    maxWidth: '1024px',
+  }
 }
 
 class SelectImageDialog extends Component {
@@ -65,6 +68,7 @@ class SelectImageDialog extends Component {
           title="Select image"
           actions={actions}
           modal={true}
+          contentStyle={styles.container}
           open={this.state.open}
           onRequestClose={this.handleClose}
           autoScrollBodyContent={true}
@@ -78,22 +82,5 @@ class SelectImageDialog extends Component {
     )
   }
 }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     itemImages: state.itemImages.images
-//   }
-// }
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     fetchItemImages: () => dispatch(fetchItemImages())
-//   }
-// }
-
-// SelectImageDialog = connect(
-//   // mapStateToProps,
-//   // mapDispatchToProps
-// )(SelectImageDialog)
 
 export default SelectImageDialog;

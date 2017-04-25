@@ -35,7 +35,7 @@ export default function inventory(state=initialState, action){
       return {
         ...state,
         isFetching: false,
-        items: action.data
+        items: action.items
       }
     case ADD_INVENTORY_ITEM_REQUEST:
       return {
@@ -49,7 +49,7 @@ export default function inventory(state=initialState, action){
         error: true
       }
     case ADD_INVENTORY_ITEM_SUCCESS:
-      let newData = { ...state.data, [action.data._id]: action.data }
+      let newData = [ action.data, ...state.items ]
       return {
         ...state,
         isFetching: false,

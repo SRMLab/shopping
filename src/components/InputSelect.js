@@ -11,7 +11,7 @@ const InputSelect = ({label, value, onChange, options, ...props}) => (
     fullWidth={true}
     {...props} >
     { options.map((option, key) => (
-      <MenuItem key={key} value={key} primaryText={option} />
+      <MenuItem key={key} value={option} primaryText={option} />
     ))}
   </SelectField>
 )

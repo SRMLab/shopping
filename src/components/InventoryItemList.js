@@ -2,7 +2,7 @@ import React from 'react';
 import ListItemView from '../components/ListItemView';
 import _ from 'underscore'
 
-const InventoryItemList = ({inventory}) => {
+const InventoryItemList = ({inventory, ...props}) => {
   return (
     <div>
     { inventory.isFetching && <h3>Loading</h3> }
@@ -10,7 +10,8 @@ const InventoryItemList = ({inventory}) => {
       <ListItemView key={index}
         imagePath={item.imagePath}
         primaryText={item.name}
-        secondaryText={item.category}
+        secondaryText={`${item.secondName} ${item.shops[0]} ${item.category}`}
+        {...props}
       />
     ))}
     </div>

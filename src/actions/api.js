@@ -15,8 +15,9 @@ export function getInventoryItems() {
 
 export function insertInventoryItem(item) {
   return new Promise((resolve, reject) => {
-    store.child('inventory')
-      .push(item)
+    const newItemRef = store.child('inventory').push()
+    newItemRef
+      .set(item)
       .then((res) => resolve(res))
       .catch((err) => { reject(err) })
   })

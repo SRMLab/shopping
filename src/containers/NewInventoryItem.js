@@ -9,10 +9,10 @@ import {
 import Button from '../components/Button'
 import InputText from '../components/InputText'
 import InputSelect from '../components/InputSelect'
-import InputSelectMultiple from '../components/InputSelectMultiple'
-import AutoSelect from '../components/AutoSelect'
 import Header from '../components/Header'
-import SelectImageDialog from './SelectImageDialog'
+import SelectImageDialog from '../components/SelectImageDialog'
+
+import { FIELD_REQUIRED } from '../constants/form'
 
 
 const styles = {
@@ -21,16 +21,14 @@ const styles = {
   }
 }
 
-let categories = [];
-let shops = [];
-
 class NewInventoryItem extends Component {
   state = {
     errors: {},
     name: '',
     secondName: '',
     category: '',
-    shops: [],
+    shopFirst: '',
+    shopSecond: '',
     imagePath: '',
   }
   handleChangeName = (e) => {
@@ -42,9 +40,11 @@ class NewInventoryItem extends Component {
   handleChangeCategory = (e, index, value) => {
     this.setState({category: value})
   }
-  handleChangeShops = (e, index, values) => {
-    console.log(values)
-    this.setState({shops: values})
+  handleChangeShopFirst = (e, index, value) => {
+    this.setState({shopFirst: value})
+  }
+  handleChangeShopSecond = (e, index, value) => {
+    this.setState({shopSecond: value})
   }
   handleChangeImage = (imageUrl) => {
     this.setState({imagePath: imageUrl})
@@ -52,24 +52,34 @@ class NewInventoryItem extends Component {
 
   handleSubmit = (e) => {
     if (e) e.preventDefault()
-    if (!this.state.name) {
-      this.setState({errors: {name: 'This field is required'}})
+
+    const errors = formValidate(this.state);
+    if (Object.keys(errors).length > 0) {
+      this.setState({errors: errors})
       return
     }
-    // if (!categories.includes(this.state.category)) categories.push(this.state.category);
 
-    this.props.dispatch(addInventoryItem({
-      name: this.state.name,
-      secondName: this.state.secondName,
+    // Make an array of shops with shop first and shop second
+    let shops = []
+    if (this.state.shopFirst !== 'N/A' && this.state.shopFirst !== '') 
+      shops.push(this.state.shopFirst)
+    if (this.state.shopSecond !== 'N/A' && this.state.shopSecond !== '') 
+      shops.push(this.state.shopSecond)
+
+    this.props.addInventoryItem({
+      name: this.state.name.trim(),
+      secondName: this.state.secondName.trim(),
       category: this.state.category,
+      shops: shops,
       imagePath: this.state.imagePath,
-    }))
+    });
   }
 
   componentDidMount(){
     this.props.fetchReferences()
   }
   render() {
+    const shoplist = ['N/A', ...this.props.shops]
     return (
       <div>
         <Header title='New Inventory Item' right='Submit' onClickRight={this.handleSubmit}/>
@@ -98,13 +108,22 @@ class NewInventoryItem extends Component {
               errorText={this.state.errors.category}
             />
 
-            <InputSelectMultiple
-              label="Shops"
-              placeholder='Choose one or more'
-              values={this.state.shops}
-              onChange={this.handleChangeShops}
-              options={this.props.shops}
-              errorText={this.state.errors.shops}
+            <InputSelect
+              label="Shop 1st"
+              placeholder='Choose one'
+              value={this.state.shopFirst}
+              onChange={this.handleChangeShopFirst}
+              options={shoplist}
+              errorText={this.state.errors.shopFirst}
+            />
+
+            <InputSelect
+              label="Shop 2nd"
+              placeholder='Choose one'
+              value={this.state.shopSecond}
+              onChange={this.handleChangeShopSecond}
+              options={shoplist}
+              errorText={this.state.errors.shopSecond}
             />
 
             <SelectImageDialog onChange={this.handleChangeImage} itemImages={this.props.itemImages}/>
@@ -128,6 +147,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchReferences: () => dispatch(fetchReferences()),
+    addInventoryItem: (item) => dispatch(addInventoryItem(item)),
   }
 }
 
@@ -139,3 +159,10 @@ NewInventoryItem = connect(
 
 export default NewInventoryItem
 
+function formValidate(state){
+  let errors = {};
+  if (!state.name.trim()) errors.name = FIELD_REQUIRED;
+  if (!state.secondName.trim()) errors.secondName = FIELD_REQUIRED;
+  if (!state.category) errors.category = FIELD_REQUIRED;
+  return errors;
+}

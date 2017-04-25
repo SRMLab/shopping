@@ -7,9 +7,21 @@ import { browserHistory } from 'react-router'
 // import Icon from '../components/Icon'
 // import { ICONS } from '../constants'
 
+const styles = {
+  header: {
+    position: 'fixed',
+    top: '0px',
+    left: '0px',
+  },
+  body: {
+    marginTop: '65px'
+  }
+};
+
 class InventoryListContainer extends Component {
   componentDidMount(){
-    this.props.fetchInventoryItems()
+    if (this.props.inventory.items.length < 1)
+      this.props.fetchInventoryItems();
   }
   render(){
     // const addIcon = <Icon icon={ ICONS.PLUS } />
@@ -17,8 +29,11 @@ class InventoryListContainer extends Component {
       <div>
         <Header title='Inventory List' right='New'
           onClickRight={()=> browserHistory.push('/inventory/new')}
+          style={styles.header}
         />
-        <InventoryItemList inventory={this.props.inventoryItems}/>
+        <div style={styles.body}>
+          <InventoryItemList inventory={this.props.inventory} />
+        </div>
       </div>
     )
   }
@@ -26,7 +41,7 @@ class InventoryListContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    inventoryItems: state.inventory
+    inventory: state.inventory
   }
 }
 
