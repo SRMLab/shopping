@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import { 
   addInventoryItem,
+  modifyInventoryItem,
   fetchReferences,
 } from '../actions/inventory'
 
@@ -24,6 +25,7 @@ const styles = {
 class NewInventoryItem extends Component {
   state = {
     errors: {},
+    id: null,
     name: '',
     secondName: '',
     category: '',
@@ -66,15 +68,30 @@ class NewInventoryItem extends Component {
     if (this.state.shopSecond !== 'N/A' && this.state.shopSecond !== '') 
       shops.push(this.state.shopSecond)
 
-    this.props.addInventoryItem({
+    const item = {
       name: this.state.name.trim(),
       secondName: this.state.secondName.trim(),
       category: this.state.category,
       shops: shops,
       imagePath: this.state.imagePath,
-    });
+    }
+    if (this.state.id) this.props.modifyInventoryItem(this.state.id, item);
+    else this.props.addInventoryItem(item);
   }
 
+  componentWillMount(){
+    console.log(this.props.params.id)
+    const item = this.props.items[this.props.params.id];
+    this.setState({
+      id: this.props.params.id,
+      name: item.name,
+      secondName: item.secondName,
+      category: item.category,
+      // shopFirst: item.shop[0],
+      // shopSecond: item.shop[0],
+      // imagePath: item.imagePath,
+    })
+  }
   componentDidMount(){
     this.props.fetchReferences()
   }
@@ -148,6 +165,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchReferences: () => dispatch(fetchReferences()),
     addInventoryItem: (item) => dispatch(addInventoryItem(item)),
+    modifyInventoryItem: (id, item) => dispatch(modifyInventoryItem(id, item)),
   }
 }
 

@@ -4,6 +4,9 @@ import { fetchInventoryItems } from '../actions/inventory'
 import Header from '../components/Header';
 import InventoryItemList from '../components/InventoryItemList';
 import { browserHistory } from 'react-router'
+
+import { orderBy, groupBy } from '../helpers'
+
 // import Icon from '../components/Icon'
 // import { ICONS } from '../constants'
 
@@ -22,8 +25,14 @@ class InventoryListContainer extends Component {
   componentDidMount(){
     // if (this.props.inventory.items.length < 1) this.props.fetchInventoryItems();
   }
+  handleOnItemClick(id){
+    console.log(id)
+    browserHistory.push('/inventory/'+id)
+  }
   render(){
     // const addIcon = <Icon icon={ ICONS.PLUS } />
+    const items = groupBy(this.props.items, 'category')
+    console.log(items)
     return (
       <div>
         <Header title='Inventory List' right='New'
@@ -31,7 +40,7 @@ class InventoryListContainer extends Component {
           style={styles.header}
         />
         <div style={styles.body}>
-          <InventoryItemList inventory={this.props.inventory} />
+          <InventoryItemList items={items} onItemClick={this.handleOnItemClick}/>
         </div>
       </div>
     )
@@ -40,7 +49,7 @@ class InventoryListContainer extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    inventory: state.inventory
+    items: state.inventory.items
   }
 }
 

@@ -5,8 +5,10 @@ import {
   ADD_INVENTORY_ITEM_REQUEST,
   ADD_INVENTORY_ITEM_FAILURE,
   ADD_INVENTORY_ITEM_SUCCESS,
+  MODIFY_INVENTORY_ITEM_SUCCESS,
   FETCH_REFERENCES_SUCCESS,
 } from '../constants'
+import { v4 } from 'uuid';
 
 import { orderBy, groupBy } from '../helpers'
 
@@ -33,14 +35,14 @@ export default function inventory(state=initialState, action){
     //     isFetching: false,
     //     error: true
     //   }
-    case FETCH_INVENTORY_ITEMS_SUCCESS:
-      action.items.sort(orderBy('name'));
-      const items = groupBy(action.items, 'category');
-      return {
-        ...state,
-        isFetching: false,
-        items
-      }
+    // case FETCH_INVENTORY_ITEMS_SUCCESS:
+    //   action.items.sort(orderBy('name'));
+    //   const items = groupBy(action.items, 'category');
+    //   return {
+    //     ...state,
+    //     isFetching: false,
+    //     items
+    //   }
     case ADD_INVENTORY_ITEM_REQUEST:
       return {
         ...state,
@@ -53,14 +55,19 @@ export default function inventory(state=initialState, action){
         error: true
       }
     case ADD_INVENTORY_ITEM_SUCCESS:
-      // let newData = [ action.data, ...state.items ]
-      let newData = { ...state.items }
-      if (!newData[action.data.category]) newData[action.data.category] = [];
-      newData[action.data.category].push(action.data)
+      let items = { ...state.items }
+      items[v4()] = action.item;
       return {
         ...state,
         isFetching: false,
-        items: newData
+        items
+      }
+    case MODIFY_INVENTORY_ITEM_SUCCESS:
+      // let items = { ...state.items, [state[action.id]]: action.item }
+      return {
+        ...state,
+        isFetching: false,
+        items: { ...state.items, [action.id]: action.item }
       }
     case FETCH_REFERENCES_SUCCESS:
       return {

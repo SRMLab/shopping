@@ -1,9 +1,11 @@
-export const groupBy = (arr, key) => {
-  return arr.reduce((res, item) => {
-    if (!item.hasOwnProperty(key)) return res;
-    const group = item[key];
-    if (!res[group]) res[group] = [];
-    res[group].push(item);
+import _ from 'lodash';
+
+export const groupBy = (collection, groupKey) => {
+  return _.reduce(collection, (res, item, key) => {
+    if (!item.hasOwnProperty(groupKey)) return res;
+    const group = item[groupKey];
+    if (!res[group]) res[group] = {};
+    res[group][key] = item;
     return res;
   }, {});
 }

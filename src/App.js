@@ -25,6 +25,7 @@ class App extends Component {
               <Route path="inventory">
                 <IndexRoute component={InventoryListContainer} />
                 <Route path="new" component={NewInventoryItem} />
+                <Route path=":id" component={NewInventoryItem} />
               </Route>
             </Route>
           </Router>

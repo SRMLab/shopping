@@ -5,6 +5,7 @@ import {
   ADD_INVENTORY_ITEM_REQUEST,
   ADD_INVENTORY_ITEM_FAILURE,
   ADD_INVENTORY_ITEM_SUCCESS,
+  MODIFY_INVENTORY_ITEM_SUCCESS,
   FETCH_REFERENCES_SUCCESS, 
 } from '../constants'
 
@@ -25,10 +26,18 @@ function fetchInventoryItemsSuccess(items) {
   }
 }
 
-function addInventoryItemSuccess(data) {
+function addInventoryItemSuccess(item) {
   return {
     type: ADD_INVENTORY_ITEM_SUCCESS,
-    data,
+    item,
+  }
+}
+
+function modifyInventoryItemSuccess(id, item) {
+  return {
+    type: MODIFY_INVENTORY_ITEM_SUCCESS,
+    id,
+    item,
   }
 }
 
@@ -89,9 +98,15 @@ export function fetchReferences() {
 // }
 
 export function addInventoryItem(item) {
-  console.log(item)
   return (dispatch) => {
     dispatch(addInventoryItemSuccess(item))
+    browserHistory.push('/inventory')
+  }
+}
+
+export function modifyInventoryItem(id, item) {
+  return (dispatch) => {
+    dispatch(modifyInventoryItemSuccess(id, item))
     browserHistory.push('/inventory')
   }
 }

@@ -7,7 +7,7 @@ import AddShoppingCart from 'material-ui/svg-icons/action/add-shopping-cart';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import Avatar from 'material-ui/Avatar';
-import CartInOut from './CartInOut';
+import _ from 'lodash'
 
 const styles = {
   thumbnail: {
@@ -26,37 +26,30 @@ const styles = {
   }
 }
 
-const InventoryItemGroup = ({group, ...props}) => {
-  // const checkbox = (
-  //   <Checkbox
-  //     checkedIcon={<AddShoppingCart />}
-  //     uncheckedIcon={<ShoppingCart />}
-  //     onCheck={(e, checked) => {
-  //       console.log("Onchecked", checked)}
-  //     }
-  //     item={item}
-  //   />
-  // );
+const checkbox = (item) => (
+  <Checkbox
+    checkedIcon={<AddShoppingCart />}
+    uncheckedIcon={<ShoppingCart />}
+    onCheck={(e, checked) => {
+      console.log("Onchecked", checked, item)}
+    }
+    onClick={(e) => e.stopPropagation()}
+  />
+);
+
+const InventoryItemGroup = ({group, onItemClick}) => {
   return (
     <div>
-      { group.map((item, index) => {
-        const shop = item.shops[0] || '';
+      { _.map(group, (item, id) => {
+        const shop = item.shops || '';
         return (
-          <div key={index}>
+          <div key={id} >
             <ListItem 
               leftAvatar={<Avatar src={item.imagePath} style={styles.thumbnail} />}
               primaryText={item.name}
               secondaryText={`${item.secondName} ${shop}`}
-              rightIcon={
-                <Checkbox
-                  checkedIcon={<AddShoppingCart />}
-                  uncheckedIcon={<ShoppingCart />}
-                  onCheck={(e, checked) => {
-                    console.log("Onchecked", checked, item)}
-                  }
-                />
-              }
-              {...props}
+              rightIcon={checkbox(item)}
+              onClick={(e) => onItemClick(id)}
             />
             <Divider />
           </div>
@@ -68,15 +61,14 @@ const InventoryItemGroup = ({group, ...props}) => {
 }
 
 
-const InventoryItemList = ({inventory, ...props}) => {
+const InventoryItemList = ({items, onItemClick}) => {
   return (
     <div>
-    { inventory.isFetching && <h3>Loading</h3> }
-    { Object.keys(inventory.items).map((group, index) => {
+    { Object.keys(items).map((group, index) => {
       return (
         <List key={index}>
           <Subheader style={styles.subheader}>{group.toUpperCase()}</Subheader>
-          <InventoryItemGroup group={inventory.items[group]}  />
+          <InventoryItemGroup group={items[group]} onItemClick={onItemClick} />
         </List>
       )})
     }
@@ -85,3 +77,5 @@ const InventoryItemList = ({inventory, ...props}) => {
 }
 
 export default InventoryItemList;
+
+    // { inventory.isFetching && <h3>Loading</h3> }
