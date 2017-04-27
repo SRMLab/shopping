@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchInventoryItems } from '../actions'
+import { fetchInventoryItems } from '../actions/inventory'
 import Header from '../components/Header';
 import InventoryItemList from '../components/InventoryItemList';
 import { browserHistory } from 'react-router'
@@ -20,8 +20,7 @@ const styles = {
 
 class InventoryListContainer extends Component {
   componentDidMount(){
-    if (this.props.inventory.items.length < 1)
-      this.props.fetchInventoryItems();
+    // if (this.props.inventory.items.length < 1) this.props.fetchInventoryItems();
   }
   render(){
     // const addIcon = <Icon icon={ ICONS.PLUS } />

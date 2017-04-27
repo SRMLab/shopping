@@ -10,6 +10,7 @@
     "firebase": "3.7.8",
     "lodash": "4.17.4",
     "material-ui": "0.17.0",
+    "node-uuid": "1.4.8",
     "react": "15.4.2",
     "react-dom": "15.4.2",
     "react-redux": "5.0.3",
@@ -19,7 +20,8 @@
     "redux-form": "6.5.0",
     "redux-logger": "3.0.1",
     "redux-thunk": "2.2.0",
-    "underscore": "1.8.3"
+    "underscore": "1.8.3",
+    "uuid": "3.0.1"
   },
   "scripts": {
     "start": "react-scripts start",

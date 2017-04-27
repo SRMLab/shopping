@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { 
   addInventoryItem,
   fetchReferences,
-} from '../actions'
+} from '../actions/inventory'
 
 import Button from '../components/Button'
 import InputText from '../components/InputText'

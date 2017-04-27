@@ -4,7 +4,7 @@ const store = database.ref('Midori')
 
 export function getInventoryItems() {
   return new Promise((resolve, reject) => {
-    store.child('inventory')
+    store.child('inventory').orderByValue()
       .once('value', snap => {
         const items = _.reduce(snap.val(), (res, item) => { res.push(item); return res } , [])
         resolve(items)

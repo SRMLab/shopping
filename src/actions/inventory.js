@@ -50,7 +50,7 @@ export function fetchInventoryItems() {
         dispatch(fetchInventoryItemsSuccess(data))
       })
       .catch((err) => {
-        dispatch({ type: FETCH_INVENTORY_ITEMS_FAILURE })
+        // dispatch({ type: FETCH_INVENTORY_ITEMS_FAILURE })
         console.log('err:', err);
       })
   }
@@ -72,19 +72,27 @@ export function fetchReferences() {
   }
 }
 
+// export function addInventoryItem(item) {
+//   console.log(item)
+//   return (dispatch) => {
+//     dispatch({ type: ADD_INVENTORY_ITEM_REQUEST })
+//     insertInventoryItem(item)
+//       .then(() => {
+//         dispatch(addInventoryItemSuccess(item))
+//         browserHistory.push('/inventory')
+//       })
+//       .catch((err) => {
+//         dispatch({ type: ADD_INVENTORY_ITEM_FAILURE })
+//         console.log('err:', err);
+//       })
+//   }
+// }
+
 export function addInventoryItem(item) {
   console.log(item)
   return (dispatch) => {
-    dispatch({ type: ADD_INVENTORY_ITEM_REQUEST })
-    insertInventoryItem(item)
-      .then(() => {
-        dispatch(addInventoryItemSuccess(item))
-        browserHistory.push('/inventory')
-      })
-      .catch((err) => {
-        dispatch({ type: ADD_INVENTORY_ITEM_FAILURE })
-        console.log('err:', err);
-      })
+    dispatch(addInventoryItemSuccess(item))
+    browserHistory.push('/inventory')
   }
 }
 
