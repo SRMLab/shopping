@@ -45,7 +45,7 @@ const InventoryItemGroup = ({group, onItemClick}) => {
         return (
           <div key={id} >
             <ListItem 
-              leftAvatar={<Avatar src={item.imagePath} style={styles.thumbnail} />}
+              leftAvatar={<Avatar src={item.image} style={styles.thumbnail} />}
               primaryText={item.name}
               secondaryText={`${item.secondName} ${shop}`}
               rightIcon={checkbox(item)}

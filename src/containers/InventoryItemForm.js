@@ -12,6 +12,7 @@ import InputText from '../components/InputText'
 import InputSelect from '../components/InputSelect'
 import Header from '../components/Header'
 import SelectImageDialog from '../components/SelectImageDialog'
+import ImageUpload from '../components/ImageUpload'
 
 import { FIELD_REQUIRED } from '../constants/form'
 
@@ -22,7 +23,7 @@ const styles = {
   }
 }
 
-class NewInventoryItem extends Component {
+class InventoryItemForm extends Component {
   state = {
     errors: {},
     id: null,
@@ -32,6 +33,7 @@ class NewInventoryItem extends Component {
     shopFirst: '',
     shopSecond: '',
     imagePath: '',
+    image: null,
   }
   handleChangeName = (e) => {
     this.setState({name: e.target.value})
@@ -48,13 +50,11 @@ class NewInventoryItem extends Component {
   handleChangeShopSecond = (e, index, value) => {
     this.setState({shopSecond: value})
   }
-  handleChangeImage = (imageUrl) => {
-    this.setState({imagePath: imageUrl})
+  handleChangeImage = (image) => {
+    this.setState({image: image})
   }
-
   handleSubmit = (e) => {
     if (e) e.preventDefault()
-
     const errors = formValidate(this.state);
     if (Object.keys(errors).length > 0) {
       this.setState({errors: errors})
@@ -74,29 +74,37 @@ class NewInventoryItem extends Component {
       category: this.state.category,
       shops: shops,
       imagePath: this.state.imagePath,
+      image: this.state.image,
     }
     if (this.state.id) this.props.modifyInventoryItem(this.state.id, item);
     else this.props.addInventoryItem(item);
   }
 
   componentWillMount(){
-    console.log(this.props.params.id)
-    const item = this.props.items[this.props.params.id];
-    this.setState({
-      id: this.props.params.id,
-      name: item.name,
-      secondName: item.secondName,
-      category: item.category,
-      // shopFirst: item.shop[0],
-      // shopSecond: item.shop[0],
-      // imagePath: item.imagePath,
-    })
+    if (this.props.params.id){
+      console.log(this.props.params.id)
+      const item = this.props.items[this.props.params.id];
+      this.setState({
+        id: this.props.params.id,
+        name: item.name,
+        secondName: item.secondName,
+        category: item.category,
+        // shopFirst: item.shop[0],
+        // shopSecond: item.shop[0],
+        // imagePath: item.imagePath,
+        image: item.image,
+      })
+    }
   }
   componentDidMount(){
     this.props.fetchReferences()
   }
   render() {
     const shoplist = ['N/A', ...this.props.shops]
+    let imageView = null
+    if (this.state.image) {
+      imageView = (<img src={this.state.image} />)
+    }
     return (
       <div>
         <Header title='New Inventory Item' right='Submit' onClickRight={this.handleSubmit}/>
@@ -143,8 +151,15 @@ class NewInventoryItem extends Component {
               errorText={this.state.errors.shopSecond}
             />
 
-            <SelectImageDialog onChange={this.handleChangeImage} itemImages={this.props.itemImages}/>
+            <ImageUpload onChange={this.handleChangeImage}/> 
+
+            { imageView }
+            <SelectImageDialog 
+              onChange={this.handleChangeImage} 
+              itemImages={this.props.itemImages}/>
+
             <Button label='Submit' type='submit' />
+
           </form>
         </div>
       </div>
@@ -170,12 +185,12 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-NewInventoryItem = connect(
+InventoryItemForm = connect(
   mapStateToProps,
   mapDispatchToProps
-)(NewInventoryItem)
+)(InventoryItemForm)
 
-export default NewInventoryItem
+export default InventoryItemForm
 
 function formValidate(state){
   let errors = {};
